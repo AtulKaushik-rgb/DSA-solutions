@@ -1,0 +1,60 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+ Program Link: https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/
+
+/**
+Intuition behind this is....
+since every i & (len - i) nodes are twins..
+we can move upto mid of LL and reverse the other half.
+this will make i & mid node same...
+now we can compare i & mid, i+1 & i+mid+1, i +2 & i+mid+2 and get the MAX value.
+**/
+
+class Solution {
+    public int pairSum(ListNode head) {
+        ListNode copy = head;
+        ListNode slow = head;
+        ListNode fast = head; 
+        
+        while(fast!=null && fast.next!=null){
+            
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        ListNode rev = reverse(slow);
+        int max = 0;
+        while(rev != null){
+            
+            int val = rev.val + copy.val;     
+            if(val>max)
+                max = val;
+           
+            rev = rev.next;
+            copy = copy.next;    
+        }
+        return max;
+        
+    }
+    public ListNode reverse(ListNode l1){
+        ListNode prev = null;
+        ListNode curr = l1;
+        ListNode next = null;
+        
+        while(curr != null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;     
+    }
+}
